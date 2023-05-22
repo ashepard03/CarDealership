@@ -47,8 +47,8 @@ public class UserInterface {
                     [6} Vehicles By Type
                     [7} All Vehicles
                        -Other Options-
-                    [A] Add Vehicle
-                    [R} Remove Vehicle
+                    [8] Add Vehicle
+                    [9} Remove Vehicle
                     [X] Exit
                     
                     """;
@@ -65,8 +65,8 @@ public class UserInterface {
                 case "5" -> processGetByMileageRequest();
                 case "6" -> processGetByVehicleTypeRequest();
                 case "7" -> processGetAllVehiclesRequest();
-                case "A" -> processAddVehicleRequest();
-                case "R" -> processRemoveVehicleRequest();
+                case "8" -> processAddVehicleRequest();
+                case "9" -> processRemoveVehicleRequest();
                 case "X" -> {
                     screenDone = true;
                     System.out.println("Exiting Car Dealership");

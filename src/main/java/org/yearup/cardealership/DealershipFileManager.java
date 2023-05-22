@@ -47,10 +47,16 @@ public class DealershipFileManager {
     }
 
     public void saveDealership(Dealership dealership){
+//        String name = dealership.getName();
+//        String address = dealership.getAddress();
+//        String phone = dealership.getPhone();
+        String dealer = String.format("%s|%s|%s\n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
+
         try {
             FileWriter fileWriter = new FileWriter("inventory.csv");
+            fileWriter.write(dealer);
             for (Vehicle v : dealership.getAllVehicles()) {
-                String vehicle = String.format("%s|%s|%s|%s|%s|%d|%.2f\n",
+                String vehicle = String.format("%s|%d|%s|%s|%s|%s|%d|%.2f\n",
                         v.getVin(), v.getYear(), v.getMake(), v.getModel(),
                         v.getVehicleType(), v.getColor(), v.getOdometer(), v.getPrice());
                 fileWriter.write(vehicle);

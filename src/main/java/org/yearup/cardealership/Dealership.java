@@ -15,6 +15,18 @@ public class Dealership {
         this.phone = phone;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
     public List<Vehicle> getVehiclesByPrice(double min, double max) {
         List<Vehicle> values = new ArrayList<Vehicle>();
         for (Vehicle v : inventory) {
