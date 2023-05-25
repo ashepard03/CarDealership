@@ -242,19 +242,8 @@ public class UserInterface {
 
             boolean financeOption = scanner.next().equalsIgnoreCase("yes");
 
-            // Format prices and costs to show like money
-
-            String formattedSalesTaxAmount = String.format("%.2f", salesTaxAmount);
-
-            String formattedRecordingFee = String.format("%.2f", recordingFee);
-
-            String formattedProcessingFee = String.format("%.2f", processingFee);
-
             SalesContract salesContract = new SalesContract(contractDate, customerName, customerEmail, vehicle,
-
-                    Double.parseDouble(formattedSalesTaxAmount), Double.parseDouble(formattedRecordingFee),
-
-                    Double.parseDouble(formattedProcessingFee), financeOption, contract.getTotalPrice());
+                    financeOption);
 
             cdm.saveContract(salesContract);
             dealership.removeVehicles(vehicle);
@@ -286,13 +275,7 @@ public class UserInterface {
 
         double leaseFee = vehicle.getPrice() * 0.07; // Calculate lease fee as 7% of the vehicle price
 
-        // Format prices and costs to show like actual money
-        String formattedExpectedEndValue = String.format("%.2f", expectedEndingValue);
-
-        String formattedLeaseFee = String.format("%.2f", leaseFee);
-        LeaseContract leaseContract = new LeaseContract(contractDate, customerName, customerEmail, vehicle,
-
-                Double.parseDouble(formattedExpectedEndValue), Double.parseDouble(formattedLeaseFee));
+        LeaseContract leaseContract = new LeaseContract(contractDate, customerName, customerEmail, vehicle);
 
         cdm.saveContract(leaseContract);
 

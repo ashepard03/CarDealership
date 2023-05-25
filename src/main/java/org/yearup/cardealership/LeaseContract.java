@@ -6,7 +6,7 @@ public class LeaseContract extends Contract{
     private double leaseFee;
     private double totalPrice;
 
-    public LeaseContract(String contractDate, String cxName, String cxEmail, Vehicle vehicleSold, double expectedEndValue, double leaseFee) {
+    public LeaseContract(String contractDate, String cxName, String cxEmail, Vehicle vehicleSold) {
         super(contractDate, cxName, cxEmail, vehicleSold);
         this.totalPrice = totalPrice;
         this.expectedEndValue = totalPrice * 0.5;
@@ -15,22 +15,26 @@ public class LeaseContract extends Contract{
     }
 
     public double getExpectedEndValue() {
+        double vehiclePrice = vehicleSold.getPrice();
+        double expectedEndValue = vehiclePrice / 2;
         return expectedEndValue;
     }
 
     public double getLeaseFee() {
+        double vehiclePrice = vehicleSold.getPrice();
+        double leaseFee = vehiclePrice * 0.07;
         return leaseFee;
     }
 
     @Override
     public double getTotalPrice() {
-        return totalPrice + leaseFee;
+        return vehicleSold.getPrice() + leaseFee;
     }
 
     @Override
     public double getMonthlyPayment() {
         //math.pow returns the value of argument a raised to the power of argument b
-        double monthlyInterestRate = 0.04 / 12;
+        double monthlyInterestRate = leaseFinanceRate / 12;
         double leaseAmount = getTotalPrice() - expectedEndValue;
         return (leaseAmount * monthlyInterestRate) / (1- Math.pow(1 + monthlyInterestRate, -36));
     }
