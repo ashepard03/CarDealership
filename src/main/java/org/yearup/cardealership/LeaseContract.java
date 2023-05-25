@@ -6,11 +6,12 @@ public class LeaseContract extends Contract{
     private double leaseFee;
     private double totalPrice;
 
-    public LeaseContract(String contractDate, String cxName, String cxEmail, String vehicleSold) {
+    public LeaseContract(String contractDate, String cxName, String cxEmail, Vehicle vehicleSold, double expectedEndValue, double leaseFee) {
         super(contractDate, cxName, cxEmail, vehicleSold);
         this.totalPrice = totalPrice;
         this.expectedEndValue = totalPrice * 0.5;
         this.leaseFee = totalPrice * 0.07;
+
     }
 
     public double getExpectedEndValue() {
@@ -32,5 +33,31 @@ public class LeaseContract extends Contract{
         double monthlyInterestRate = 0.04 / 12;
         double leaseAmount = getTotalPrice() - expectedEndValue;
         return (leaseAmount * monthlyInterestRate) / (1- Math.pow(1 + monthlyInterestRate, -36));
+    }
+
+    //create a string builder
+    // append LEASE|
+    //append date, cx name, cx email, vehicle sold, total price, monthly payment, expected end value, lease fee
+    @Override
+    public String getPersistenceString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("LEASE").append("|");
+        sb.append(getContractDate()).append("|");
+        sb.append(getCxName()).append("|");
+        sb.append(getCxEmail()).append("|");
+        sb.append(getVehicleSold().getVin()).append("|");
+        sb.append(getVehicleSold().getYear()).append("|");
+        sb.append(getVehicleSold().getMake()).append("|");
+        sb.append(getVehicleSold().getModel()).append("|");
+        sb.append(getVehicleSold().getVehicleType()).append("|");
+        sb.append(getVehicleSold().getColor()).append("|");
+        sb.append(getVehicleSold().getOdometer()).append("|");
+        sb.append(getVehicleSold().getPrice()).append("|");
+        sb.append(getExpectedEndValue()).append("|");
+        sb.append(getLeaseFee()).append("|");
+        sb.append(getTotalPrice()).append("|");
+        sb.append(getMonthlyPayment()).append("|");
+
+        return sb.toString();
     }
 }

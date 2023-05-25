@@ -3,8 +3,7 @@ package org.yearup.cardealership;
 public class SalesContract extends Contract{
     private static final double salesTax = 0.05;
     private static final double recordingFee = 100.00;
-    private static final double processingFeeUnder = 295.00;
-    private static final double processingFeeAbove = 495.00;
+    private static double processingFee;
     private static final double interestRateUnder = 0.0525;
     private static final double interestRateAbove = 0.0425;
     private static final int loanTermUnder = 24;
@@ -14,10 +13,11 @@ public class SalesContract extends Contract{
     private double monthlyPayment;
     private boolean financeOption;
 
-    public SalesContract(String date, String name, String cxEmail, Vehicle vehicleSold, boolean financeOption, double totalPrice) {
+    public SalesContract(String date, String name, String cxEmail, Vehicle vehicleSold, double salesTax, double recordingFee, boolean financeOption, double processingFee, double totalPrice) {
         super(date, name, cxEmail, vehicleSold);
         this.financeOption = financeOption;
         this.totalPrice = totalPrice;
+        this.processingFee = processingFee;
     }
 
     public double getSalesTaxAmount() {
@@ -28,10 +28,10 @@ public class SalesContract extends Contract{
     }
     public double getProcessingFee() {
         //if the total price is below p.u if above p.a
-        if (getTotalPrice() < 10000) {
-            return processingFeeUnder;
+        if (vehicleSold.getPrice() < 10000) {
+            return 295.00;
         } else {
-            return processingFeeAbove;
+            return 495.00;
         }
     }
     public boolean isFinanceOption() {
@@ -48,14 +48,42 @@ public class SalesContract extends Contract{
         vehiclePrice = vehicleSold.getPrice();
         //calculating
         if (vehiclePrice < 10000) {
-            totalPrice = vehiclePrice + processingFeeUnder;
+            totalPrice = vehiclePrice + 295.00;
         } else {
-            totalPrice = vehiclePrice + processingFeeAbove;
+            totalPrice = vehiclePrice + 495.00;
         }
         totalPrice = totalPrice + recordingFee;
         totalPrice += (vehiclePrice + salesTax);
 
         return totalPrice;
+    }
+
+    // create a string builder
+    //append SALE|
+    // append date, cx name, cx email, vehicle sold, total price, monthly payment, sales tax, recording, processing, finance option
+    @Override
+    public String getPersistenceString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SALE").append("|");
+        sb.append(getContractDate()).append("|");
+        sb.append(getCxName()).append("|");
+        sb.append(getCxEmail()).append("|");
+        sb.append(getVehicleSold().getVin()).append("|");
+        sb.append(getVehicleSold().getYear()).append("|");
+        sb.append(getVehicleSold().getMake()).append("|");
+        sb.append(getVehicleSold().getModel()).append("|");
+        sb.append(getVehicleSold().getVehicleType()).append("|");
+        sb.append(getVehicleSold().getColor()).append("|");
+        sb.append(getVehicleSold().getOdometer()).append("|");
+        sb.append(getVehicleSold().getPrice()).append("|");
+        sb.append(getSalesTaxAmount()).append("|");
+        sb.append(getRecordingFee()).append("|");
+        sb.append(getProcessingFee()).append("|");
+        sb.append(getTotalPrice()).append("|");
+        sb.append(isFinanceOption() ? "YES" : "NO").append("|");
+        sb.append(getMonthlyPayment()).append("|");
+
+        return sb.toString();
     }
 
     @Override
@@ -77,6 +105,8 @@ public class SalesContract extends Contract{
             int numberOfPayments = loanTermUnder;
             monthlyPayment = (loanAmount * monthlyInterest) / (1 - Math.pow(1+ monthlyInterest, -numberOfPayments));
         } return monthlyPayment;
+
+
 
     }
 
